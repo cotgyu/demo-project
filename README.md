@@ -48,3 +48,25 @@
 	5. Dependencies : 이 후 필요한 것은 따로 추가
 	   - Spring Web, Spring Data JPA, Lombok, H2 Database, MySQL Driver
 	```
+
+	-	gradle vs maven ?
+
+		-	필요한 라이브러리글을 자동으로 다운받고 빌드까지 관리해줌
+
+		-	요즘은 gradle 이 대세
+
+		-	빌드배포툴로 ANT와 MAVEN의 단점을 보완했다고 함
+
+		-	상속구조를 이용해 멀티모듈 구현 가능
+
+		-	maven의 길고 떨어지는 가독성 개선 (xml 사용안함)
+
+		-	성능 향상을 위한 다양한 기능 제공 (증분 빌드, 작업결과 캐싱, 병렬 실행 등 가능함)
+
+	-	arifact : 빌드될 때의 결과물 (jar 이름)
+
+-	프로젝트설정 파일 생성
+
+	-	기존의 .properties 파일은 지우고 yml 파일 생성 (test 용 따로 생성)
+	-	테스트 시 lombok 정상 작동안할 때
+		-	인텔리제이 : Annotation Processors - Enable annotation processing 체크
