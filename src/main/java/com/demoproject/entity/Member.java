@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseEntity{
 
     @Id @GeneratedValue
     private Long id;

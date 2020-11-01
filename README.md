@@ -70,3 +70,8 @@
 	-	기존의 .properties 파일은 지우고 yml 파일 생성 (test 용 따로 생성)
 	-	테스트 시 lombok 정상 작동안할 때
 		-	인텔리제이 : Annotation Processors - Enable annotation processing 체크
+
+-	TODO
+
+	-	엔티티 기본 설정 추가
+	-	rest api를 통한 회원등록, 업데이트 + 테스트 코드 생성

@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -59,6 +61,26 @@ public class MemberControllerTest extends BaseControllerTest{
 
         // then
         assertThat(allCustomMember.size()).isEqualTo(2);
+
+    }
+
+    @Test
+    public void baseEntityTest(){
+        //given
+        Member testMember = new Member("testMember");
+
+        memberRepository.save(testMember);
+
+        em.flush();
+        em.clear();
+
+        // when
+        Member findMember = memberRepository.findById(1L).get();
+
+        System.out.println(findMember.getCreatedDate());
+
+        // then
+        assertThat(findMember.getCreatedDate()).isNotNull();
 
     }
 }
