@@ -1,5 +1,6 @@
 package com.demoproject.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Member extends BaseEntity{
 
     private String username;
 
+    @Builder
     public Member(String username) {
         this.username = username;
     }

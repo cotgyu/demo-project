@@ -1,10 +1,9 @@
-package com.demoproject.controller;
+package com.demoproject.service;
 
+import com.demoproject.controller.BaseControllerTest;
 import com.demoproject.dto.MemberDto;
 import com.demoproject.entity.Member;
 import com.demoproject.repository.MemberRepository;
-import com.demoproject.repository.MemberRepositoryCustom;
-import com.demoproject.service.MemberService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +14,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @Transactional
 @Rollback(false)
-public class MemberControllerTest extends BaseControllerTest{
+class MemberServiceTest extends BaseControllerTest {
+
 
     @PersistenceContext
     private EntityManager em;
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private MemberService memberService;
 
 
     @TestConfiguration
@@ -46,43 +48,23 @@ public class MemberControllerTest extends BaseControllerTest{
 
 
     @Test
-    public void querydslTest(){
-
-        // given
-        Member testMember = new Member("testMember");
-        Member testMember2 = new Member("testMember2");
-
-        memberRepository.save(testMember);
-        memberRepository.save(testMember2);
-
-        em.flush();
-        em.clear();
-
-        // when
-        List<Member> allCustomMember = memberRepository.findAllCustomMember();
-
-        // then
-        assertThat(allCustomMember.size()).isEqualTo(2);
-
-    }
-
-    @Test
-    public void baseEntityTest(){
+    public void addMemberTest(){
         //given
-        Member testMember = new Member("testMember");
 
-        memberRepository.save(testMember);
+        MemberDto dto = MemberDto.builder()
+                .username("username1")
+                .build();
 
-        em.flush();
-        em.clear();
 
-        // when
+        //when
+        long result = memberService.addMember(dto);
+
         Member findMember = memberRepository.findById(1L).get();
 
-        System.out.println(findMember.getCreatedDate());
+        assertThat(findMember.getId()).isEqualTo(result);
+        assertThat(findMember.getUsername()).isEqualTo("username1");
 
-        // then
-        assertThat(findMember.getCreatedDate()).isNotNull();
 
     }
+
 }
