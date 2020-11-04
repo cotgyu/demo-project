@@ -1,7 +1,7 @@
 package com.demoproject.service;
 
 import com.demoproject.controller.BaseControllerTest;
-import com.demoproject.dto.MemberDto;
+import com.demoproject.dto.MemberSaveDto;
 import com.demoproject.entity.Member;
 import com.demoproject.repository.MemberRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @Transactional
@@ -51,7 +50,7 @@ class MemberServiceTest extends BaseControllerTest {
     public void addMemberTest(){
         //given
 
-        MemberDto dto = MemberDto.builder()
+        MemberSaveDto dto = MemberSaveDto.builder()
                 .username("username1")
                 .build();
 

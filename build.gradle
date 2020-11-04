@@ -29,6 +29,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	compile("com.querydsl:querydsl-jpa:4.2.2")
 	compile("com.querydsl:querydsl-apt:4.2.2")
+	compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.27'
+	compile 'jstl:jstl:1.2'
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

@@ -4,25 +4,22 @@ import com.demoproject.dto.MemberSaveDto;
 import com.demoproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/member")
-public class MemberController {
+@RequestMapping(value = "/api/member")
+public class MemberRestController {
 
     private final MemberService memberService;
 
-    @GetMapping("/list")
-    public String memberList(Model model){
+    @PostMapping("/add")
+    public Long addMember(@RequestBody MemberSaveDto dto){
 
-        model.addAttribute("memberList", memberService.findAllMember());
-
-        return "memberListPage";
+        return memberService.addMember(dto);
     }
 
 }

@@ -1,10 +1,7 @@
 package com.demoproject.controller;
 
-import com.demoproject.dto.MemberDto;
 import com.demoproject.entity.Member;
 import com.demoproject.repository.MemberRepository;
-import com.demoproject.repository.MemberRepositoryCustom;
-import com.demoproject.service.MemberService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional

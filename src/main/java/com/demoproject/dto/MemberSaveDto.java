@@ -5,18 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class MemberDto {
+public class MemberSaveDto {
 
     private Long id;
     private String username;
 
-    public MemberDto(Long id, String username, String teamName) {
+    public MemberSaveDto(Long id, String username, String teamName) {
         this.id = id;
         this.username = username;
     }
 
     @Builder
-    public MemberDto(String username){
+    public MemberSaveDto(String username){
 
         this.username = username;
     }

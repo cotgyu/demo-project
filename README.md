@@ -71,7 +71,13 @@
 	-	테스트 시 lombok 정상 작동안할 때
 		-	인텔리제이 : Annotation Processors - Enable annotation processing 체크
 
+-	compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.27' : jsp 사용
+
+-	compile 'jstl:jstl:1.2' : jsp 내 jtl 사용
+
 -	TODO
 
 	-	rest api를 통한 회원등록, 업데이트 + 테스트 코드 생성
 	-	builder 패턴 적용
+	-	로그 적용
+	-	에러 컨트롤러 적용
