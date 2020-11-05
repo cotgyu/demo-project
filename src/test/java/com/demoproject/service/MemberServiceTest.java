@@ -33,19 +33,6 @@ class MemberServiceTest extends BaseControllerTest {
     private MemberService memberService;
 
 
-    @TestConfiguration
-    static class TestConfig {
-
-        @PersistenceContext
-        private EntityManager entityManager;
-
-        @Bean
-        public JPAQueryFactory jpaQueryFactory() {
-            return new JPAQueryFactory(entityManager);
-        }
-    }
-
-
     @Test
     public void addMemberTest(){
         //given

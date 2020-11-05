@@ -1,15 +1,13 @@
 package com.demoproject.dto;
 
 import com.demoproject.entity.Member;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-@Getter
+@Getter @NoArgsConstructor @AllArgsConstructor
 public class MemberRequestDto {
 
     private Long id;

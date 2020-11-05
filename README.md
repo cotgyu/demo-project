@@ -75,6 +75,8 @@
 
 -	compile 'jstl:jstl:1.2' : jsp 내 jtl 사용
 
+-	json 직렬화 관련 빈생성자 정리
+
 -	TODO
 
 	-	rest api를 통한 회원등록, 업데이트 + 테스트 코드 생성

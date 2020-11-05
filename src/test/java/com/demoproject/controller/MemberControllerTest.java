@@ -1,5 +1,6 @@
 package com.demoproject.controller;
 
+import com.demoproject.dto.MemberSaveDto;
 import com.demoproject.entity.Member;
 import com.demoproject.repository.MemberRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,10 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 @Rollback(false)
@@ -25,19 +31,6 @@ public class MemberControllerTest extends BaseControllerTest{
 
     @Autowired
     private MemberRepository memberRepository;
-
-
-    @TestConfiguration
-    static class TestConfig {
-
-        @PersistenceContext
-        private EntityManager entityManager;
-
-        @Bean
-        public JPAQueryFactory jpaQueryFactory() {
-            return new JPAQueryFactory(entityManager);
-        }
-    }
 
 
     @Test
@@ -78,6 +71,28 @@ public class MemberControllerTest extends BaseControllerTest{
 
         // then
         assertThat(findMember.getCreatedDate()).isNotNull();
+
+    }
+
+    @Test
+    public void addMemberRestTest() throws Exception{
+
+        //given
+        MemberSaveDto memberSaveDto = MemberSaveDto.builder()
+                .username("addMember")
+                .build();
+
+
+        //when then
+        mockMvc.perform(post("/api/member/add")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(this.objectMapper.writeValueAsString(memberSaveDto))
+        )
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("resultMessage").value(1));
+
+
 
     }
 }
