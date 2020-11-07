@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +28,20 @@ public class MemberRestController {
         resultMap.put("resultMessage", result);
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity updateMember(@PathVariable Long id,
+            @RequestBody MemberSaveDto dto) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+
+
+        long result = memberService.updateMember(id, dto);
+
+        resultMap.put("resultMessage", result);
+
+
+        return new ResponseEntity(resultMap, HttpStatus.OK);
     }
 
 }

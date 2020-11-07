@@ -7,16 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 public class MemberSaveDto {
 
-    private Long id;
     private String username;
-
-    public MemberSaveDto(Long id, String username, String teamName) {
-        this.id = id;
-        this.username = username;
-    }
 
     @Builder
     public MemberSaveDto(String username){

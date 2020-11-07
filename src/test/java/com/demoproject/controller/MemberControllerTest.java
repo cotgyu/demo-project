@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -95,4 +96,32 @@ public class MemberControllerTest extends BaseControllerTest{
 
 
     }
+
+
+    @Test
+    public void updateMemberRestTest() throws Exception{
+
+        //given
+        Member testMember = new Member("testMember");
+        Member saveMember = memberRepository.save(testMember);
+
+        MemberSaveDto memberSaveDto = MemberSaveDto.builder()
+                .username("updateMember")
+                .build();
+
+
+        //when then
+        mockMvc.perform(put("/api/member/update/{id}", saveMember.getId())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(this.objectMapper.writeValueAsString(memberSaveDto))
+        )
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("resultMessage").value(saveMember.getId()));
+
+
+
+    }
+
+
 }

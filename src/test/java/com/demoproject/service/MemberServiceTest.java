@@ -35,8 +35,8 @@ class MemberServiceTest extends BaseControllerTest {
 
     @Test
     public void addMemberTest(){
-        //given
 
+        //given
         MemberSaveDto dto = MemberSaveDto.builder()
                 .username("username1")
                 .build();
@@ -50,6 +50,29 @@ class MemberServiceTest extends BaseControllerTest {
         assertThat(findMember.getId()).isEqualTo(result);
         assertThat(findMember.getUsername()).isEqualTo("username1");
 
+
+    }
+
+    @Test
+    public void updateMemberTest(){
+
+        //given
+        Member testMember = new Member("testMember");
+        memberRepository.save(testMember);
+
+
+        //when
+        MemberSaveDto updateDto = MemberSaveDto.builder()
+                .username("username1")
+                .build();
+
+
+        memberService.updateMember(1L, updateDto);
+
+
+        Member resultMember = memberRepository.findById(1L).get();
+
+        assertThat(resultMember.getUsername()).isEqualTo("username1");
 
     }
 
