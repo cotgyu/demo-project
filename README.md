@@ -77,10 +77,14 @@
 
 -	json 직렬화 관련 빈생성자 정리
 
--	modelmapp 정리
+-	modelmapper 정리
+
+-	post put 관련 정리
 
 -	TODO
 
-	-	rest api를 통한 회원등록, 업데이트 + 테스트 코드 생성
+	-	연관관계 생성
+		-	게시판 관련 crud
+		-	게시판 페이징 처리
 	-	builder 패턴 적용
 	-	에러 컨트롤러 적용

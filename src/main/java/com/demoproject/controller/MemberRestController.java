@@ -35,11 +35,9 @@ public class MemberRestController {
             @RequestBody MemberSaveDto dto) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
 
-
         long result = memberService.updateMember(id, dto);
 
         resultMap.put("resultMessage", result);
-
 
         return new ResponseEntity(resultMap, HttpStatus.OK);
     }
