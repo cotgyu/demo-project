@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>BoardList</title>
+	<title>BoardDetail</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -14,10 +14,12 @@
 </head>
 <body>
 
-	<c:forEach var="board" items="${boardList}">
+	제목 : ${board.title}
 
-		글번호 : ${board.seq} / 제목 : ${board.title} <br>
-	</c:forEach>
+	<br>
+
+	내용 : ${board.content}
+
 
 </body>
 </html>

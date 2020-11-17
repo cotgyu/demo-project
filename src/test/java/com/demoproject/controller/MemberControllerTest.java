@@ -97,7 +97,7 @@ public class MemberControllerTest extends BaseControllerTest{
         )
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("resultMessage").value(1));
+                .andExpect(jsonPath("result").value(1));
 
 
 
@@ -123,7 +123,7 @@ public class MemberControllerTest extends BaseControllerTest{
         )
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("resultMessage").value(saveMember.getId()));
+                .andExpect(jsonPath("result").value(saveMember.getId()));
 
 
 
@@ -136,7 +136,7 @@ public class MemberControllerTest extends BaseControllerTest{
         Member testMember = new Member("testMember");
         memberRepository.save(testMember);
 
-        Board testBoard = new Board("title", "content");
+        Board testBoard = new Board("title", "content", testMember);
         testBoard.setMember(testMember);
 
         Board savedBoard = boardRepository.save(testBoard);

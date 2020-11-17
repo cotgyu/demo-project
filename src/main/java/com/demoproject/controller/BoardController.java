@@ -6,6 +6,7 @@ import com.demoproject.service.BoardService;
 import com.demoproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dom4j.rule.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.PostConstruct;
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.OptionalInt;
@@ -40,6 +42,16 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
 
         return "boardListPage";
+    }
+
+    @GetMapping("/detail/{seq}")
+    public String boardDetailView(Model model, @PathVariable long seq){
+
+        BoardRequestDto boardRequestDto = boardService.viewDetail(seq);
+
+        model.addAttribute("board", boardRequestDto);
+
+        return "boardDetailPage";
     }
 
 }

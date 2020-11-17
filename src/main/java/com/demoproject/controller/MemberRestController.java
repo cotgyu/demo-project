@@ -25,7 +25,8 @@ public class MemberRestController {
 
         long result = memberService.addMember(dto);
 
-        resultMap.put("resultMessage", result);
+        resultMap.put("result", result);
+        resultMap.put("resultMessage", "성공");
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
@@ -37,7 +38,8 @@ public class MemberRestController {
 
         long result = memberService.updateMember(id, dto);
 
-        resultMap.put("resultMessage", result);
+        resultMap.put("result", result);
+        resultMap.put("resultMessage", "성공");
 
         return new ResponseEntity(resultMap, HttpStatus.OK);
     }

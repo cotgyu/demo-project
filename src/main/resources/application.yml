@@ -28,3 +28,9 @@ logging.level:
   root: info
 #  org.hibernate.type: trace
 
+# 실행 중 JSP 수정 반영 옵션
+server:
+  servlet:
+    jsp:
+      init-parameters:
+        development: true

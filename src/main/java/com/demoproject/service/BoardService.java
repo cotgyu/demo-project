@@ -36,13 +36,17 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    public Long addBoard(BoardSaveDto boardSaveDto){
+    public long addBoard(BoardSaveDto boardSaveDto){
         return boardRepository.save(boardSaveDto.toEntity()).getSeq();
     }
 
-    public long updateBoard(Long seq, BoardSaveDto boardSaveDto){
+    public long updateBoard(long seq, BoardSaveDto boardSaveDto){
 
         Optional<Board> findBoard = boardRepository.findById(seq);
+
+        if(!findBoard.isPresent()){
+            return -1;
+        }
 
         Board board = findBoard.get();
 
@@ -52,6 +56,23 @@ public class BoardService {
         boardRepository.save(board);
 
         return board.getSeq();
+    }
+
+    public BoardRequestDto viewDetail(long seq){
+
+        Optional<Board> findBoard = boardRepository.findById(seq);
+
+        if (!findBoard.isPresent()){
+            BoardRequestDto resultDto = new BoardRequestDto();
+
+            return resultDto;
+        }
+
+        Board board = findBoard.get();
+
+        BoardRequestDto resultDto = new BoardRequestDto(board);
+
+        return resultDto;
     }
 
 }
