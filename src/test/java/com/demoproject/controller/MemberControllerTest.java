@@ -3,6 +3,7 @@ package com.demoproject.controller;
 import com.demoproject.dto.MemberSaveDto;
 import com.demoproject.entity.Board;
 import com.demoproject.entity.Member;
+import com.demoproject.entity.MemberRoles;
 import com.demoproject.repository.BoardRepository;
 import com.demoproject.repository.MemberRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,8 +46,17 @@ public class MemberControllerTest extends BaseControllerTest{
     public void querydslTest(){
 
         // given
-        Member testMember = new Member("testMember");
-        Member testMember2 = new Member("testMember2");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
+        Member testMember2 =  Member.builder()
+                .username("testMember2")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
 
         memberRepository.save(testMember);
         memberRepository.save(testMember2);
@@ -64,7 +75,11 @@ public class MemberControllerTest extends BaseControllerTest{
     @Test
     public void baseEntityTest(){
         //given
-        Member testMember = new Member("testMember");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
 
         memberRepository.save(testMember);
 
@@ -108,7 +123,12 @@ public class MemberControllerTest extends BaseControllerTest{
     public void updateMemberRestTest() throws Exception{
 
         //given
-        Member testMember = new Member("testMember");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
         Member saveMember = memberRepository.save(testMember);
 
         MemberSaveDto memberSaveDto = MemberSaveDto.builder()
@@ -133,7 +153,12 @@ public class MemberControllerTest extends BaseControllerTest{
     public void member_board_Test() {
 
         //given
-        Member testMember = new Member("testMember");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
         memberRepository.save(testMember);
 
         Board testBoard = new Board("title", "content", testMember);

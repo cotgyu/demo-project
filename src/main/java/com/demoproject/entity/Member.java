@@ -1,18 +1,15 @@
 package com.demoproject.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor @AllArgsConstructor
 public class Member extends BaseEntity{
 
     @Id @GeneratedValue
@@ -20,8 +17,11 @@ public class Member extends BaseEntity{
 
     private String username;
 
-    @Builder
-    public Member(String username) {
-        this.username = username;
-    }
+    private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<MemberRoles> roles;
+
+
 }

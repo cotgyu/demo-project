@@ -17,7 +17,6 @@
 
 	-	Spring Boot 2.3.x
 	-	java 8++
-	-	Spring Security
 	-	jpa + queryDSL
 	-	gradle
 	-	test case
@@ -81,8 +80,9 @@
 
 -	post put 관련 정리
 
+-	권한 enum 부분 정리
+
 -	TODO
 
-	-	에러 컨트롤러 적용
-
-	-	시큐리티 적용
+	-	시큐리티 테스트 추가
+	-	REST 보완

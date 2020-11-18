@@ -4,6 +4,7 @@ import com.demoproject.controller.BaseControllerTest;
 import com.demoproject.dto.BoardRequestDto;
 import com.demoproject.entity.Board;
 import com.demoproject.entity.Member;
+import com.demoproject.entity.MemberRoles;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +34,11 @@ class BoardRepositoryTest extends BaseControllerTest {
 
 
         // given
-        Member testMember = new Member("username1");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
 
         boardRepository.save(new Board("title1", "content1", testMember));
         boardRepository.save(new Board("title2", "content2", testMember));

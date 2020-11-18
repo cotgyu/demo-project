@@ -5,6 +5,7 @@ import com.demoproject.dto.BoardRequestDto;
 import com.demoproject.dto.BoardSaveDto;
 import com.demoproject.entity.Board;
 import com.demoproject.entity.Member;
+import com.demoproject.entity.MemberRoles;
 import com.demoproject.repository.BoardRepository;
 import com.demoproject.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +36,12 @@ class BoardServiceTest extends BaseControllerTest {
     public void addBoardTest(){
 
         //given
-        Member testMember = new Member("testName");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
         memberRepository.save(testMember);
 
         BoardSaveDto testDto = new BoardSaveDto("title","content", testMember);
@@ -52,7 +59,12 @@ class BoardServiceTest extends BaseControllerTest {
 
     @Test
     public void updateBoardTest(){
-        Member testMember = new Member("testName");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
         memberRepository.save(testMember);
 
         BoardSaveDto testDto = new BoardSaveDto("title","content", testMember);

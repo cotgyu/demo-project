@@ -1,6 +1,7 @@
 package com.demoproject.controller;
 
 import com.demoproject.entity.Member;
+import com.demoproject.entity.MemberRoles;
 import com.demoproject.repository.MemberRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.assertj.core.api.Assertions;
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +39,11 @@ class HomeControllerTest extends BaseControllerTest{
     @Test
     public void jpaTest(){
 
-        Member testMember = new Member("testMember");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
 
         memberRepository.save(testMember);
 

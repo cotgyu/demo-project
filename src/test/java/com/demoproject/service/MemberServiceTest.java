@@ -3,6 +3,7 @@ package com.demoproject.service;
 import com.demoproject.controller.BaseControllerTest;
 import com.demoproject.dto.MemberSaveDto;
 import com.demoproject.entity.Member;
+import com.demoproject.entity.MemberRoles;
 import com.demoproject.repository.MemberRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,7 +60,12 @@ class MemberServiceTest extends BaseControllerTest {
     public void updateMemberTest(){
 
         //given
-        Member testMember = new Member("testMember");
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
         memberRepository.save(testMember);
 
 
