@@ -19,19 +19,19 @@ public class MemberRestController {
 
     private final MemberService memberService;
 
-    @PostMapping(value = "/add")
+    @PostMapping
     public ResponseEntity addMember(@RequestBody MemberSaveDto dto) throws Exception{
         Map<String, Object> resultMap = new HashMap<>();
 
         long result = memberService.addMember(dto);
 
         resultMap.put("result", result);
-        resultMap.put("resultMessage", "성공");
+        resultMap.put("resultMessage", "success");
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity updateMember(@PathVariable Long id,
             @RequestBody MemberSaveDto dto) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
@@ -39,7 +39,7 @@ public class MemberRestController {
         long result = memberService.updateMember(id, dto);
 
         resultMap.put("result", result);
-        resultMap.put("resultMessage", "성공");
+        resultMap.put("resultMessage", "success");
 
         return new ResponseEntity(resultMap, HttpStatus.OK);
     }

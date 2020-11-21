@@ -30,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/", "/admin/**").hasAuthority("ROLE_ADMIN")
+                // 경로설정 가능
+                //.antMatchers("/", "/api/member/**").hasAuthority("ROLE_USER")
+                //.antMatchers("/", "/api/board/**").hasAuthority("ROLE_USER")
                 .and()
                     .formLogin()
                     .loginPage("/")

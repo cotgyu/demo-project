@@ -48,9 +48,9 @@ class MemberServiceTest extends BaseControllerTest {
         //when
         long result = memberService.addMember(dto);
 
-        Member findMember = memberRepository.findById(1L).get();
+        Member findMember = memberRepository.findById(result).get();
 
-        assertThat(findMember.getId()).isEqualTo(result);
+        //then
         assertThat(findMember.getUsername()).isEqualTo("username1");
 
 

@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +30,12 @@ class BoardRepositoryTest extends BaseControllerTest {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Test
     public void pageBoardTest(){
@@ -40,11 +48,16 @@ class BoardRepositoryTest extends BaseControllerTest {
                 .roles(Set.of(MemberRoles.USER))
                 .build();
 
+        memberRepository.save(testMember);
+
         boardRepository.save(new Board("title1", "content1", testMember));
         boardRepository.save(new Board("title2", "content2", testMember));
         boardRepository.save(new Board("title3", "content3", testMember));
 
-        PageRequest pageRequest = PageRequest.of(0, 2, Sort.Direction.DESC, "seq");
+        em.flush();
+        em.clear();
+
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "seq");
 
 
         // when
@@ -56,9 +69,9 @@ class BoardRepositoryTest extends BaseControllerTest {
         long totalElements= toMap.getTotalElements();
 
 
-        assertThat(content.size()).isEqualTo(2);
-        assertThat(toMap.getTotalElements()).isEqualTo(3);
-        assertThat(toMap.getTotalPages()).isEqualTo(2);
+        assertThat(content.size()).isEqualTo(10);
+        assertThat(toMap.getTotalElements()).isEqualTo(42);
+        assertThat(toMap.getTotalPages()).isEqualTo(5);
 
 
 

@@ -1,27 +1,25 @@
 package com.demoproject.controller;
 
+import com.demoproject.dto.BoardSaveDto;
 import com.demoproject.dto.MemberSaveDto;
 import com.demoproject.entity.Board;
 import com.demoproject.entity.Member;
 import com.demoproject.entity.MemberRoles;
 import com.demoproject.repository.BoardRepository;
 import com.demoproject.repository.MemberRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
+
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 @Rollback(false)
-public class MemberControllerTest extends BaseControllerTest{
+class BoardRestControllerTest extends BaseControllerTest{
 
     @PersistenceContext
     private EntityManager em;
@@ -43,39 +41,8 @@ public class MemberControllerTest extends BaseControllerTest{
 
 
     @Test
-    public void querydslTest(){
+    public void restPostTest() throws Exception{
 
-        // given
-        Member testMember =  Member.builder()
-                .username("testMember")
-                .password(("pass"))
-                .roles(Set.of(MemberRoles.USER))
-                .build();
-
-        Member testMember2 =  Member.builder()
-                .username("testMember2")
-                .password(("pass"))
-                .roles(Set.of(MemberRoles.USER))
-                .build();
-
-        memberRepository.save(testMember);
-        memberRepository.save(testMember2);
-
-        em.flush();
-        em.clear();
-
-        List<Member> all = memberRepository.findAll();
-
-        // when
-        List<Member> allCustomMember = memberRepository.findAllCustomMember();
-
-        // then
-        assertThat(allCustomMember.size()).isEqualTo(all.size());
-
-    }
-
-    @Test
-    public void baseEntityTest(){
         //given
         Member testMember =  Member.builder()
                 .username("testMember")
@@ -88,30 +55,90 @@ public class MemberControllerTest extends BaseControllerTest{
         em.flush();
         em.clear();
 
-        // when
-        Member findMember = memberRepository.findById(1L).get();
 
-        System.out.println(findMember.getCreatedDate());
-
-        // then
-        assertThat(findMember.getCreatedDate()).isNotNull();
-
-    }
-
-    @Test
-    public void addMemberRestTest() throws Exception{
-
-        //given
-        MemberSaveDto memberSaveDto = MemberSaveDto.builder()
-                .username("addMember")
-                .password("pass")
+        BoardSaveDto boardSaveDto = BoardSaveDto.builder()
+                .title("testBoard1")
+                .content("testContent1")
+                .member(testMember)
                 .build();
 
 
         //when then
-        mockMvc.perform(post("/api/member")
+        mockMvc.perform(post("/api/board")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(this.objectMapper.writeValueAsString(memberSaveDto))
+                .content(this.objectMapper.writeValueAsString(boardSaveDto))
+        )
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("resultMessage").value("success"));
+    }
+
+
+
+
+    @Test
+    public void restGetTest() throws Exception{
+
+        //given
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
+        memberRepository.save(testMember);
+
+        Board testBoard = Board.builder().title("test").content("testContent").member(testMember).build();
+
+        boardRepository.save(testBoard);
+
+        em.flush();
+        em.clear();
+
+
+
+
+        //when then
+        mockMvc.perform(get("/api/board/{seq}", testBoard.getSeq())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andDo(print())
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("result").isNotEmpty());
+    }
+
+
+    @Test
+    public void restPutTest() throws Exception{
+
+        //given
+        Member testMember =  Member.builder()
+                .username("testMember")
+                .password(("pass"))
+                .roles(Set.of(MemberRoles.USER))
+                .build();
+
+        memberRepository.save(testMember);
+
+        Board testBoard = Board.builder().title("test").content("testContent").member(testMember).build();
+
+        boardRepository.save(testBoard);
+
+        em.flush();
+        em.clear();
+
+
+        BoardSaveDto boardUpdateDto = BoardSaveDto.builder()
+                .title("updateBoard")
+                .content("updateContent")
+                .member(testMember)
+                .build();
+
+
+        //when then
+        mockMvc.perform(put("/api/board/{seq}", testBoard.getSeq())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(this.objectMapper.writeValueAsString(boardUpdateDto))
         )
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -120,40 +147,9 @@ public class MemberControllerTest extends BaseControllerTest{
     }
 
 
-    @Test
-    public void updateMemberRestTest() throws Exception{
-
-        //given
-        Member testMember =  Member.builder()
-                .username("testMember")
-                .password(("pass"))
-                .roles(Set.of(MemberRoles.USER))
-                .build();
-
-        Member saveMember = memberRepository.save(testMember);
-
-        em.flush();
-        em.clear();
-
-        MemberSaveDto memberSaveDto = MemberSaveDto.builder()
-                .username("updateMember")
-                .password("pass2")
-                .build();
-
-
-        //when then
-        mockMvc.perform(put("/api/member/{id}", saveMember.getId())
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(this.objectMapper.writeValueAsString(memberSaveDto))
-        )
-                .andDo(print())
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("result").value(saveMember.getId()));
-
-    }
 
     @Test
-    public void member_board_Test() {
+    public void restBadRequestPostTest() throws Exception{
 
         //given
         Member testMember =  Member.builder()
@@ -164,22 +160,27 @@ public class MemberControllerTest extends BaseControllerTest{
 
         memberRepository.save(testMember);
 
-        Board testBoard = new Board("title", "content", testMember);
-        testBoard.setMember(testMember);
-
-        Board savedBoard = boardRepository.save(testBoard);
-
         em.flush();
         em.clear();
 
-        //when
-        Optional<Board> optionalBoard = boardRepository.findById(savedBoard.getSeq());
-        Board findBoard = optionalBoard.get();
 
-        //then
-        assertThat(findBoard.getMember().getUsername()).isEqualTo("testMember");
+        BoardSaveDto boardSaveDto = BoardSaveDto.builder()
+                .title("")
+                .content("")
+                .member(testMember)
+                .build();
 
 
+        //when then
+        mockMvc.perform(post("/api/board")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(this.objectMapper.writeValueAsString(boardSaveDto))
+        )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
+
+
+
 
 }
