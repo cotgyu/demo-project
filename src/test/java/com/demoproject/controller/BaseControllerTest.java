@@ -15,7 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @SpringBootTest
-@ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class BaseControllerTest {
 
