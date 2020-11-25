@@ -93,7 +93,83 @@
 
 		-	test/resources/application-test.properties
 
--	build.gradle 파일 설정 (+ querydsl 설정)
+-	querydsl 설정
+
+	-	querydsl 이란? (인프런-김영한님 강의 소개 참고)
+
+		-	sql를 java로 type-safe 하게 개발할 수 있게 해줌
+		-	기존 쿼리 실행은 쿼리가 실제 실행될 때 문법오류가 발견되지만 querydsl을 사용함으로 컴파일 시점에 발견할 수 있음
+		-	최신 백엔드 기술은 스프링 부트 + 스프링 데이터 JPA 를 조합하여 사용함
+			-	하지만 해결하자 못하는 한계점이 있음 (복잡한쿼리, 동적쿼리)
+			-	이를 해결하도록 도와줌!!
+
+	-	build.gradle 추가한 부분 (기억보다 기록을 참고 https://jojoldu.tistory.com/372\)
+
+		```java
+		/*
+		querydsl 플러그인
+		아래 플러그인이 있어야 querydsl의 도메인 모델인 QClass들이 생성됨
+		*/
+		plugins{
+		    ...
+		    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+		    ...
+		}
+
+
+		// querydsl 의존성
+		dependencies{
+		    ...
+		    compile("com.querydsl:querydsl-jpa:4.2.2")
+		    compile("com.querydsl:querydsl-apt:4.2.2")
+		    ...
+		}
+
+
+		/*
+		querydsl 설정
+		위에서 설정한 플러그인을 사용하는 task 생성
+		gradle 탭 - other - comileQuerydsl 실행 시 프로젝트의 Entity들의 QClass가 생성됨
+		*/
+		def querydslSrcDir = 'src/main/generated' // QClass 생성 위치
+
+
+		querydsl {
+		    library = "com.querydsl:querydsl-apt"
+		    jpa = true
+		    querydslSourcesDir = querydslSrcDir
+		}
+		sourceSets {
+		    main {
+		        java {
+		            srcDirs = ['src/main/java', querydslSrcDir]
+		        }
+		    }
+		}
+		compileQuerydsl{
+		    options.annotationProcessorPath = configurations.querydsl
+		}
+		configurations {
+		    querydsl.extendsFrom compileClasspath
+		}
+		```
+
+	-	예시
+
+		```java
+		@RequiredArgsConstructor
+		public class MemberRepositoryImpl implements MemberRepositoryCustom {
+
+
+		    private final JPAQueryFactory queryFactory;
+
+
+		    @Override
+		    public List<Member> findAllCustomMember() {
+		        return queryFactory.selectFrom(member).fetch();
+		    }
+		}
+		```
 
 ---
 
