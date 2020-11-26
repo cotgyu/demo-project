@@ -66,7 +66,7 @@
 
 		-	성능 향상을 위한 다양한 기능 제공 (증분 빌드, 작업결과 캐싱, 병렬 실행 등 가능함)
 
-### 2. 프로젝트 설정
+### 2. 프로젝트 설정 메모
 
 -	프로젝트설정 파일 수정
 
@@ -171,19 +171,57 @@
 		}
 		```
 
+-	spring security 설정
+
+	-	build.gradle 추가
+		-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	-	SecurityConfig 파일 추가 (인프런 - 백기선님 강의 참고 )
+
+		-	csrf (Cross-site request forgery)
+			-	시큐리티는 기본적으로 csrf 에 대해 방어기능을 제공해줌
+			-	사용하려면 토큰 생성이 필요하므로 일단 해제하였음
+		-	시큐리티를 적용할 위치 지정 가능
+		-	로그인 진행할 url 지정 가능 (이 때 인증은 시큐리티가 진행해줌)
+		-	로그인 성공 후 처리할 url 지정가능
+			-	인증성공 후 SecurityContextHolder.getContext().getAuthentication(); 를 통해 인증한 정보 가져올 수 있음
+		-	로그아웃 url 지정가능
+			-	JSESSIONID : 서버에서 생성한 세션을 구분하기 위해 세션ID를 쿠키에 넣음. 그래서 로그아웃 시 이 쿠키를 삭제함
+		-	PasswordEncoder 를 통해 쉽게 비밀번호 암호화 처리
+			-	PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		-	필터 적용 가능 (sso, 커스텀 등)
+			-	.addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
+
+	-	UserDetailService 구현
+
+-	기타 gradle 추가한 설정
+
+	-	jsp 사용
+
+		-	compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.27'
+
+	-	jsp 내 jstl 사용
+
+		-	jstl 이란?
+		-	compile 'jstl:jstl:1.2'
+
+	-	modelmapper
+
+		-	TODO modelmapper 란?
+		-	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.1'
+
+### 3. 사용 기술 메모
+
+-	REST
+-	ExceptionHandler
+-	ErrorController
+
 ---
 
 -	테스트 시 lombok 정상 작동안할 때
 
 	-	인텔리제이 : Annotation Processors - Enable annotation processing 체크
 
--	compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.27' : jsp 사용
-
--	compile 'jstl:jstl:1.2' : jsp 내 jtl 사용
-
 -	json 직렬화 관련 빈생성자 정리
-
--	modelmapper 정리
 
 -	post put 관련 정리
 
@@ -202,4 +240,5 @@
 -	TODO
 
 	-	개념 정리
+	-	mysql 변경 후 테스트
 	-	optional 적극 활용
