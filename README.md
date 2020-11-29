@@ -70,7 +70,7 @@
 
 -	프로젝트설정 파일 수정
 
-	-	기존의 .properties 파일은 지우고 yml 파일 생성
+	-	기존의 .properties 파일은 지우고 yml 파일 생성하여 사용할 수 있다.
 
 		-	yml 장점 : 가독성, 하나의 파일에서 여러개의 설정파일 관리가능
 
@@ -81,7 +81,7 @@
 			-	profile: test 를 통해 설정을 따로 분리할 수 있다. (ActiveProfiles에 따라 설정 변경가능)
 			-	--- : 구분자, 맨위 설정이 디폴트
 
-	-	properties 의 경우 (백기선-REST API 3챕터: 테스트용 DB와 설정 분리하기)
+	-	기존의 .properties 를 사용하는 경우 (백기선-REST API 3챕터: 테스트용 DB와 설정 분리하기)
 
 		-	DemoProjectApplicationTests 에 **@ActiveProfiles("test")** 사용
 
@@ -212,26 +212,91 @@
 
 	-	jsp 사용
 
-		-	부트는 jsp를 권장하지 않음. (임베디드 서블릿 컨테이너를 사용하는데 제약이 있는 것 같음)
+		-	부트는 jsp를 권장하지 않음 (임베디드 서블릿 컨테이너를 사용하는데 제약이 있는 것 같음)
 		-	부트 자동설정에 포함된 템플릿 엔진은 FreeMarker, Groovy, Thymeleaf, Mustache
-		-	사용하려면 의존성 추가가 필요하다. *다음부턴 Thymeleaf 를 써보자 ㅠ*
+		-	사용하려면 의존성 추가가 필요하다. (*다음부턴 Thymeleaf 를 써보자 ㅠ*\)
 		-	compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.27'
 
 	-	jsp 내 jstl 사용
 
-		-	jstl? : jsp 내에서 사용할 수 있는 태그  
+		-	jsp 내에서 사용할 수 있는 태그  
 		-	compile 'jstl:jstl:1.2'
 
 	-	modelmapper
 
-		-	TODO modelmapper 란?
+		-	객체 값들을 편하게 복사시켜줌
 		-	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.1'
 
 ### 3. 사용 기술 메모
 
 -	REST
+
+	-	그런 REST API로 괜찮은가? : https://www.youtube.com/watch?v=RP_f5dMoHFc
+	-	(인프런)백기선-스프링 기반 REST API 개발 : https://www.inflearn.com/course/spring_rest-api/dashboard
+
+	-	REST 란?
+
+		-	REpresentional State Transfer
+		-	인터넷 상의 시스템 간의 상호운용성(Interoperability)을 제공하는 방법 중 하나
+		-	시스템 제각각의 독립적인 진화를 보장하기 위한 방법
+		-	REST API : REST 아키텍쳐 스타일을 따르는 API
+			-	Client-Server
+			-	Cache
+			-	Uniform Interface
+				-	Indentification of resources
+				-	manipulation of resource through represenations
+				-	**self-descriptive message**
+				-	**hypermisa as the engine of application state (HATEOAS)**
+			-	Layered System
+			-	Code-On-Demand (optional)
+
+	-	사실 게시판같은 작은 프로젝트를 구현하면서 REST API를 사용할 일은 많이 없을 것 같음
+
+		-	다양한 클라이언트, 모바일 등을 사용하다면 유용하게 사용할 듯 싶음
+
+		-	예시를 위해 추가함
+
+	-	백기선님 강의에서 진행한 resource, 링크생성, rest docs 문서 생성 등은 생략하였음
+
+		-	REST API 개발하게 된다면 해당 소스 참조해서 진행할 것 (혹은 강의 복습!)
+		-	https://github.com/cotgyu/REST-API_InflearnCourse
+
 -	ExceptionHandler
+
+	-	요청을 처리하다가 에러가 발생하거나 자바에서 지원하는 예외가 발생했을 때 정의한 핸들러로 그 예외를 어떻게 처리할지? 어떤응답을 만들지?를 정의할 수 있다.
+
+		-	@ExceptionHandler 어노테이션을 사용해서 정의한다.
+		-	처리하고 싶은 예외를 메서드 아규먼트로 선언
+
+			-	@ExceptionHandler(value = RuntimeException.class)
+
+		-	에러메세지, 에러페이지 등 설정 가능
+
+		-	@ControllerAdvice 를 통해 컨트롤러 영역에 적용을 설정할 수 있음
+
+	-	https://cotmulgyu.blogspot.com/search?q=exception
+
 -	ErrorController
+
+	-	부트는 기본으로 에러페이지를 제공한다.
+	-	부트설정에서 오류처리에 대한 세부설정도 가능하다. ( server.error.~~~ )
+	-	부트에서 제공하는 ErrorController를 구현하면 에러 발생 이후 이동할 페이지나 처리를 커스텀할 수 있다.
+
+		```java
+		@Controller
+		public class CustomErrorPageController implements ErrorController {
+		    private static final String ERROR_PAGE = "/error";
+		    @Override
+		    public String getErrorPath() {
+		        return ERROR_PAGE;
+		    }
+		    @RequestMapping("/error")
+		    public String errorPage(HttpServletRequest request, Model model){
+		        ...
+		        return "exception";
+		    }
+		}
+		```
 
 ---
 
@@ -244,16 +309,6 @@
 -	post put 관련 정리
 
 -	권한 enum 부분 정리
-
--	REST API
-
-	-	사실 게시판같은 작은 프로젝트를 구현하면서 REST API를 사용할 일은 많이 없을 것 같음
-
-		-	다양한 클라이언트, 모바일 등을 사용하다면 유용하게 사용할 듯 싶음
-
-		-	예시를 위해 추가함.
-
-	-	resource, 링크생성, rest docs 문서 생략
 
 -	TODO
 
