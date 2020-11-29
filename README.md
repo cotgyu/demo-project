@@ -183,25 +183,43 @@
 		-	시큐리티를 적용할 위치 지정 가능
 		-	로그인 진행할 url 지정 가능 (이 때 인증은 시큐리티가 진행해줌)
 		-	로그인 성공 후 처리할 url 지정가능
+
 			-	인증성공 후 SecurityContextHolder.getContext().getAuthentication(); 를 통해 인증한 정보 가져올 수 있음
+			-	인증성공 후 (... @AuthenticationPrincipal User user ...) 를 통해 파라미터로 바로 주입받을 수 있음
+
+			-	User를 받지않고 프로젝트에서 사용할 사용자어댑터 클래스를 사용해서 받을 수도 있음 (백기선님 강의참조)
+
 		-	로그아웃 url 지정가능
+
 			-	JSESSIONID : 서버에서 생성한 세션을 구분하기 위해 세션ID를 쿠키에 넣음. 그래서 로그아웃 시 이 쿠키를 삭제함
+
 		-	PasswordEncoder 를 통해 쉽게 비밀번호 암호화 처리
+
 			-	PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
 		-	필터 적용 가능 (sso, 커스텀 등)
+
 			-	.addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
 
 	-	UserDetailService 구현
+
+		-	로그인 처리는 UserDetailService를 구현 후 진행할 수있다.
+		-	UserDetailService는 loadUserByUsername 메서드를 override 해야해는데, 이 메서드에서 조회한 사용자 정보와 로그인에 사용한 정보와 비교하여 인증을 처리함 (비교과 인증부여는 시큐리티가...)
+
+		-	public class MemberService implements UserDetailsService
 
 -	기타 gradle 추가한 설정
 
 	-	jsp 사용
 
+		-	부트는 jsp를 권장하지 않음. (임베디드 서블릿 컨테이너를 사용하는데 제약이 있는 것 같음)
+		-	부트 자동설정에 포함된 템플릿 엔진은 FreeMarker, Groovy, Thymeleaf, Mustache
+		-	사용하려면 의존성 추가가 필요하다. *다음부턴 Thymeleaf 를 써보자 ㅠ*
 		-	compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.5.27'
 
 	-	jsp 내 jstl 사용
 
-		-	jstl 이란?
+		-	jstl? : jsp 내에서 사용할 수 있는 태그  
 		-	compile 'jstl:jstl:1.2'
 
 	-	modelmapper
