@@ -208,7 +208,24 @@
 
 		-	public class MemberService implements UserDetailsService
 
+	-	권한 enum 부분 메모
+
+		```java
+		@ElementCollection(fetch = FetchType.EAGER)
+		@Enumerated(EnumType.STRING)
+		private Set<MemberRoles> roles;
+		```
+
+		-	권한은 다음과 같이 enum 으로 정의하였는데, JPA 사용 시 주의해야 함
+		-	@ElementCollection(fetch = FetchType.EAGER) : 권한을 여러개를 가질 수 있으니(여러개의 enum을 가질 수 있음), Set이나 List는 기본으로 LAZY 임. 권한은 거의 사용자 조회 시 필요한 정보이니 EAGER로 설정(즉시)
+		-	@Enumerated : 기본 값이 ORDINAL 인데, enum 순서를 기준으로 저장하기 때문에 운영 중 추가나 변경에 혼란이 발생할 수 있다. 꼭 STRING 으로 사용할 것!
+
 -	기타 gradle 추가한 설정
+
+	-	쿼리 파라미터 확인
+
+		-	jpa 사용 시 파라미터가 ? 로 표시된다. 외부 라이브러리를 통해 쉽게 확인가능하다.
+		-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
 
 	-	jsp 사용
 
@@ -256,6 +273,14 @@
 
 		-	예시를 위해 추가함
 
+		-	get, post, put
+
+			-	HTTP 메서드
+			-	GET : 서버에 리소스를 요청할 때 사용
+			-	POST : 클라이언트에서 서버로 데이터가 포함된 요청을 보낼 때 사용
+			-	DELETE, PUT : DELETE는 데이터 삭제, PUT은 이미 존재하는 데이터의 업데이트 요청을 의미하며 기술적으로는 POST와 큰 차이는 없다.
+			-	REST API 구현 시 클라이언트의 사용이 쉽도록 url은 같더라도 HTTP 메서드 타입에 따라 다른 동작을 하게끔 구현하면 좋다고함
+
 	-	백기선님 강의에서 진행한 resource, 링크생성, rest docs 문서 생성 등은 생략하였음
 
 		-	REST API 개발하게 된다면 해당 소스 참조해서 진행할 것 (혹은 강의 복습!)
@@ -298,20 +323,15 @@
 		}
 		```
 
----
+### 4. 참고
 
 -	테스트 시 lombok 정상 작동안할 때
 
 	-	인텔리제이 : Annotation Processors - Enable annotation processing 체크
 
--	json 직렬화 관련 빈생성자 정리
-
--	post put 관련 정리
-
--	권한 enum 부분 정리
+---
 
 -	TODO
 
-	-	개념 정리
-	-	mysql 변경 후 테스트
 	-	optional 적극 활용
+	-	git에서 받아서 진행했을 때 바로되는지 확인
