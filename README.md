@@ -328,10 +328,3 @@
 -	테스트 시 lombok 정상 작동안할 때
 
 	-	인텔리제이 : Annotation Processors - Enable annotation processing 체크
-
----
-
--	TODO
-
-	-	optional 적극 활용
-	-	git에서 받아서 진행했을 때 바로되는지 확인
